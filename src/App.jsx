@@ -5,6 +5,7 @@ import Main from './pages/Main';
 import styled from 'styled-components';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AddReview from './pages/AddReview';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Container>
           <Routes>
             <Route path="/" element={<Main />} />
+            <Route path="/addreview" element={<AddReview />} />
           </Routes>
         </Container>
         {/* </ToastContainer> */}
