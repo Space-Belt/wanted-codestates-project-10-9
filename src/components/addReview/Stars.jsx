@@ -4,35 +4,45 @@ import { AiOutlineStar, AiFillStar } from 'react-icons/ai';
 
 function Stars() {
   const starRef = useRef();
-  const [showStar, setShowStar] = useState(false);
-  const [mousePosition, setMousePosition] = useState(0);
+  // const [mousePosition, setMousePosition] = useState(0);
+  const [rating, setRating] = useState(0);
+  const [starWidth, setStarWidth] = useState(0);
   const handleOnClick = (e) => {
-    const a =
-      Number(e.pageX) - Number(starRef.current.getBoundingClientRect().x);
-    setMousePosition(Number(a));
-    console.log(e.pageX);
-    console.log(mousePosition);
-    console.log(e.target.getBoundingClientRect());
-    console.log(Number(a));
-    console.log(starRef.current.getBoundingClientRect().x);
+    const ratingStandard = e.target.getBoundingClientRect().width / 2;
+    const a = Math.round(
+      Number(e.pageX) - Number(starRef.current.getBoundingClientRect().x),
+    );
+    const c = Number(e.pageX) - Number(e.target.getBoundingClientRect().x);
+    if (c < e.target.getBoundingClientRect().width / 2) {
+      setStarWidth(
+        Math.round(Number(a - c + e.target.getBoundingClientRect().width / 2)),
+      );
+    } else if (c > e.target.getBoundingClientRect().width / 2) {
+      setStarWidth(
+        Math.round(Number(a - c + e.target.getBoundingClientRect().width)),
+      );
+    }
+    setRating(starWidth / ratingStandard / 2);
   };
+  console.log(starWidth);
+  console.log(rating);
   return (
     <>
       <Star>
         <Rating>평점</Rating>
         <StarRating>
-          <EmptyStars ref={starRef}>
-            <AiOutlineStar onMouseMove={handleOnClick} />
-            <AiOutlineStar onMouseMove={handleOnClick} />
-            <AiOutlineStar onMouseMove={handleOnClick} />
-            <AiOutlineStar onMouseMove={handleOnClick} />
-            <AiOutlineStar onMouseMove={handleOnClick} />
-            <FilledStars width={mousePosition}>
-              <AiFillStar onMouseMove={handleOnClick} />
-              <AiFillStar onMouseMove={handleOnClick} />
-              <AiFillStar onMouseMove={handleOnClick} />
-              <AiFillStar onMouseMove={handleOnClick} />
-              <AiFillStar onMouseMove={handleOnClick} />
+          <EmptyStars ref={starRef} onClick={handleOnClick}>
+            <AiOutlineStar />
+            <AiOutlineStar />
+            <AiOutlineStar />
+            <AiOutlineStar />
+            <AiOutlineStar />
+            <FilledStars width={starWidth}>
+              <AiFillStar />
+              <AiFillStar />
+              <AiFillStar />
+              <AiFillStar />
+              <AiFillStar />
             </FilledStars>
           </EmptyStars>
         </StarRating>
@@ -63,10 +73,12 @@ const EmptyStars = styled.span`
   overflow: hidden;
   margin: 0 auto;
   position: relative;
-  background-color: white;
   & svg {
     width: 3rem;
     height: 3rem;
+    & path {
+      pointer-events: none;
+    }
   }
 `;
 
@@ -80,7 +92,12 @@ const FilledStars = styled.span`
   top: 0;
   left: 0;
   & svg {
+    width: 3rem;
+    height: 3rem;
     color: gold;
+    & path {
+      pointer-events: none;
+    }
   }
 `;
 
