@@ -1,31 +1,41 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { AiOutlineStar, AiFillStar } from 'react-icons/ai';
 
 function Stars() {
   const starRef = useRef();
+  const filledRef = useRef();
   // const [mousePosition, setMousePosition] = useState(0);
   const [rating, setRating] = useState(0);
   const [starWidth, setStarWidth] = useState(0);
   const handleOnClick = (e) => {
     const ratingStandard = e.target.getBoundingClientRect().width / 2;
-    const a = Math.round(
+    const wholeLength = Math.round(
       Number(e.pageX) - Number(starRef.current.getBoundingClientRect().x),
     );
-    const c = Number(e.pageX) - Number(e.target.getBoundingClientRect().x);
-    if (c < e.target.getBoundingClientRect().width / 2) {
-      setStarWidth(
-        Math.round(Number(a - c + e.target.getBoundingClientRect().width / 2)),
-      );
-    } else if (c > e.target.getBoundingClientRect().width / 2) {
-      setStarWidth(
-        Math.round(Number(a - c + e.target.getBoundingClientRect().width)),
-      );
+    const starLength =
+      Number(e.pageX) - Number(e.target.getBoundingClientRect().x);
+    const halfStar = Math.round(
+      Number(
+        wholeLength - starLength + e.target.getBoundingClientRect().width / 2,
+      ),
+    );
+    const wholeStar = Math.round(
+      Number(wholeLength - starLength + e.target.getBoundingClientRect().width),
+    );
+    if (starLength < e.target.getBoundingClientRect().width / 2) {
+      setStarWidth((state) => halfStar);
+    } else if (starLength > e.target.getBoundingClientRect().width / 2) {
+      setStarWidth((state) => wholeStar);
     }
-    setRating(starWidth / ratingStandard / 2);
+    const calcRate = starWidth / ratingStandard / 2;
+    setRating((state) => calcRate);
+    console.log(starWidth);
+    console.log(rating);
   };
-  console.log(starWidth);
-  console.log(rating);
+
+  useEffect(() => {}, []);
+
   return (
     <>
       <Star>
@@ -37,7 +47,7 @@ function Stars() {
             <AiOutlineStar />
             <AiOutlineStar />
             <AiOutlineStar />
-            <FilledStars width={starWidth}>
+            <FilledStars width={starWidth} ref={filledRef}>
               <AiFillStar />
               <AiFillStar />
               <AiFillStar />
