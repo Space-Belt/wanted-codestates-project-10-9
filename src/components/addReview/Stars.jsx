@@ -8,6 +8,12 @@ function Stars() {
   // const [mousePosition, setMousePosition] = useState(0);
   const [rating, setRating] = useState(0);
   const [starWidth, setStarWidth] = useState(0);
+  const [trueFalse, setTrueFalse] = useState(false);
+
+  const handleMouseDown = (e) => {
+    setTrueFalse(!trueFalse);
+  };
+
   const handleOnClick = (e) => {
     const ratingStandard = e.target.getBoundingClientRect().width / 2;
     const wholeLength = Math.round(
@@ -30,18 +36,25 @@ function Stars() {
     }
     const calcRate = starWidth / ratingStandard / 2;
     setRating((state) => calcRate);
-    console.log(starWidth);
-    console.log(rating);
+    // console.log(starWidth);
+    // console.log(rating);
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log(starWidth);
+    console.log(rating);
+  }, [trueFalse]);
 
   return (
     <>
       <Star>
         <Rating>평점</Rating>
         <StarRating>
-          <EmptyStars ref={starRef} onClick={handleOnClick}>
+          <EmptyStars
+            ref={starRef}
+            onClick={handleOnClick}
+            onMouseDown={handleMouseDown}
+          >
             <AiOutlineStar />
             <AiOutlineStar />
             <AiOutlineStar />
