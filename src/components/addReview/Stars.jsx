@@ -1,18 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { AiOutlineStar, AiFillStar } from 'react-icons/ai';
+import { useDispatch, useSelector } from 'react-redux';
+import { handleRating } from '../../modules/star';
 
 function Stars() {
   const starRef = useRef();
   const filledRef = useRef();
-  // const [mousePosition, setMousePosition] = useState(0);
+  const dispatch = useDispatch();
   const [rating, setRating] = useState(0);
   const [starWidth, setStarWidth] = useState(0);
-  const [trueFalse, setTrueFalse] = useState(false);
-
-  const handleMouseDown = (e) => {
-    setTrueFalse(!trueFalse);
-  };
 
   const handleOnClick = (e) => {
     const ratingStandard = e.target.getBoundingClientRect().width / 2;
@@ -23,37 +20,32 @@ function Stars() {
       Number(e.pageX) - Number(e.target.getBoundingClientRect().x);
     const halfStar = Math.round(
       Number(
-        wholeLength - starLength + e.target.getBoundingClientRect().width / 2,
+        // wholeLength - starLength + e.target.getBoundingClientRect().width / 2,
+        wholeLength - starLength + ratingStandard,
       ),
     );
     const wholeStar = Math.round(
       Number(wholeLength - starLength + e.target.getBoundingClientRect().width),
     );
-    if (starLength < e.target.getBoundingClientRect().width / 2) {
+    if (starLength < ratingStandard) {
       setStarWidth((state) => halfStar);
-    } else if (starLength > e.target.getBoundingClientRect().width / 2) {
+    } else if (starLength > ratingStandard) {
       setStarWidth((state) => wholeStar);
     }
-    const calcRate = starWidth / ratingStandard / 2;
+    let calcRate = starWidth / ratingStandard / 2;
     setRating((state) => calcRate);
-    // console.log(starWidth);
-    // console.log(rating);
+    dispatch(handleRating(rating));
   };
-
-  useEffect(() => {
-    console.log(starWidth);
-    console.log(rating);
-  }, [trueFalse]);
 
   return (
     <>
       <Star>
-        <Rating>평점</Rating>
+        <Rating>평점 : {rating}</Rating>
         <StarRating>
           <EmptyStars
             ref={starRef}
             onClick={handleOnClick}
-            onMouseDown={handleMouseDown}
+            onMouseUp={handleOnClick}
           >
             <AiOutlineStar />
             <AiOutlineStar />
