@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { AiOutlineStar, AiFillStar } from 'react-icons/ai';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { handleRating } from '../../modules/star';
 
 function Stars() {
@@ -69,7 +69,6 @@ function Stars() {
 const Star = styled.div`
   width: 100%;
   height: 10rem;
-  border: 1px solid black;
 `;
 
 const Rating = styled.h1`
